@@ -1,0 +1,10 @@
+.Navbar {
+    margin: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.Navbar a {
+    margin: 10px;
+    background-color: rgb(231, 230, 230);
+}

@@ -1,0 +1,42 @@
+    [
+        {
+            "name": "Šeimos gyditojas 1",
+            "clients": {
+                "1": {
+                    "name": "1",
+                    "timeLeft": 5
+                },
+                "2": {
+                    "name": "2",
+                    "timeLeft": 15
+                }
+            }
+        },
+        {
+            "name": "Šeimos gyditojas 2",
+            "clients": {
+                "1": {
+                    "name": "1",
+                    "timeLeft": 5
+                },
+                "2": {
+                    "name": "2",
+                    "timeLeft": 10
+                }
+            }
+        },
+        {
+            "name": "Ortopedas",
+            "clients": {
+                "1": {
+                    "name": "1",
+                    "timeLeft": 0
+                },
+                "2": {
+                    "name": "2",
+                    "timeLeft": 5
+                }
+            }
+        }
+
+    ]

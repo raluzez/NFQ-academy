@@ -1,0 +1,16 @@
+.Jumbotron {
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    margin:2em;
+    font-size:1.2rem;
+    text-align: center;
+    width:18em;
+}
+
+.Jumbotron:hover{
+    background-color: #e8e8e8;
+}
+
+.Jumbotron div:first-of-type{
+    background-color: #e8e8e8;
+}

@@ -1,5 +1,6 @@
 import React, { Component, Suspense } from "react";
-import { Link, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
+import Navbar from "./components/Navbar/Navbar";
 
 import Home from "./containers/Home";
 const AddUser = React.lazy(() => import('./containers/AddUser'));
@@ -9,19 +10,13 @@ class App extends Component {
     render () {
         return (
             <div>
-                <div>
-                    <Link to="/">Švieslentė</Link>
-                    <Link to="/addUser">Pridėti naują klientą</Link>
-                    <Link to="/specialist">Specialistui</Link>
-                </div>
-                <div>
-                    <Route path="/" exact component={Home}/>
+                <Navbar/>
+                <main><Route path="/" exact component={Home}/>
                     <Suspense fallback="...">
                         <Route path="/addUser" component={AddUser}/>
                         <Route path="/specialist" component={Specialist}/>
-                    </Suspense>
-                    
-                </div>
+                    </Suspense> </main>
+                      
             </div>
         )
     }
