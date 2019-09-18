@@ -1,16 +1,43 @@
-.Jumbotron {
-    border: 2px solid #e8e8e8;
-    border-radius: 8px;
+.JumbotronCard {
     margin:2em;
     font-size:1.2rem;
     text-align: center;
     width:18em;
 }
 
-.Jumbotron:hover{
-    background-color: #e8e8e8;
+.Jumbotron {
+    width:100%;
+    height: 100%;
+    border-radius: 0 0 0.3rem 0.3rem;
+    background-color: black;
 }
 
-.Jumbotron div:first-of-type{
-    background-color: #e8e8e8;
+.Jumbotron div:first-of-type {
+    font-size: 1.5em;
+}
+
+.ClientInfo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ClientInfo span:first-of-type{
+    color:red;
+    margin-left: 2rem;
+}
+
+.ClientInfo span:last-of-type{
+    color:white;
+    margin-right: 2rem;
+}
+
+.Arrow {
+    color:white;
+    margin:auto;
+}
+
+.OnFullScreen {
+    position: absolute; 
+    width: 100vh !important; 
+    height: 100vh !important;
 }
