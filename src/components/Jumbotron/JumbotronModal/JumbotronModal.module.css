@@ -1,0 +1,78 @@
+.JumbotronModal {
+    width:100vw;
+    height: 100vh;
+    background-color: black;
+    position: absolute; 
+    top: 0;
+    left: 0;
+    z-index:100;
+    overflow: hidden;
+}
+
+.JumbotronModal div{
+    font-size: 900%;
+}
+
+.JumbotronModal div:first-of-type {
+    font-size: 1200%;
+}
+
+.ClientInfo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ClientInfo span:first-of-type{
+    color:red;
+    margin-left: 10%;
+}
+
+.ClientInfo span:last-of-type{
+    color:white;
+    margin-right: 10%;
+}
+
+.Arrow {
+    color:white;
+    margin:auto;
+}
+
+@media (max-width:1700px){
+    .JumbotronModal div{
+        font-size: 750%;
+    }
+    
+    .JumbotronModal div:first-of-type {
+        font-size: 1000%;
+    }
+}
+
+@media (max-width:780px){
+    .JumbotronModal div{
+        font-size: 450%;
+    }
+    
+    .JumbotronModal div:first-of-type {
+        font-size: 600%;
+    }
+}
+
+@media (max-width:460px){
+    .JumbotronModal div{
+        font-size: 300%;
+    }
+    
+    .JumbotronModal div:first-of-type {
+        font-size: 400%;
+    }
+}
+
+@media (max-width:320px){
+    .JumbotronModal div{
+        font-size: 150%;
+    }
+    
+    .JumbotronModal div:first-of-type {
+        font-size: 200%;
+    }
+}

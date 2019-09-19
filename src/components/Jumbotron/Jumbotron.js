@@ -7,10 +7,15 @@ const jumbotronContainer = (props) => {
     
     return(
     <>
-        <Card className={Styles.JumbotronCard}>
+        <Card className={Styles.JumbotronCard} onClick={props.onclick}>
             <Card.Header style={{"backgroundColor": "rgb(231, 230, 230)"}}>{props.name}</Card.Header>
             <Card.Body className={Styles.Jumbotron}>
-                {props.clients.map(client => (<div key={client.id} className={Styles.ClientInfo}><span>{client.name}</span><i className={`fas fa-arrow-right ${Styles.Arrow}`}></i><span>{client.timeLeft} min</span></div>))}
+                {props.clients.map(client => (
+                    <div key={client.id} className={Styles.ClientInfo}>
+                        <span>{client.name}</span>
+                        <i className={`fas fa-arrow-right ${Styles.Arrow}`}></i>
+                        <span>{client.timeLeft} min</span>
+                    </div>))}
             </Card.Body>
         </Card> 
     </>
