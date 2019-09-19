@@ -14,7 +14,7 @@ const jumbotronContainer = (props) => {
                     <div key={client.id} className={Styles.ClientInfo}>
                         <span>{client.name}</span>
                         <i className={`fas fa-arrow-right ${Styles.Arrow}`}></i>
-                        <span>{client.timeLeft} min</span>
+                        <span>{Math.ceil(client.timeLeft,1)} min</span>
                     </div>))}
             </Card.Body>
         </Card> 

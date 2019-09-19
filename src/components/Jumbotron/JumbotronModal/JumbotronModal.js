@@ -12,7 +12,7 @@ const jumbotronModal = (props) => (
                     <div key={client.id} className={Styles.ClientInfo}>
                         <span>{client.name}</span>
                         <i className={`fas fa-arrow-right ${Styles.Arrow}`} onClick={props.closeModal}></i>
-                        <span>{client.timeLeft} min</span>
+                        <span>{Math.ceil(client.timeLeft,1)} min</span>
                     </div>))}
     </div>
 )

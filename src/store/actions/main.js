@@ -12,3 +12,8 @@ export const closeJumbotronModal = () => {
         type:actionTypes.CLOSE_JUMBOTRON_MODAL
     }
 }
+export const timer = () => {
+    return {
+        type:actionTypes.TIMER_START
+    }
+}

@@ -5,21 +5,26 @@ import JumbotronContainer from "../components/Jumbotron/Jumbotron";
 import JumbotronModal from "../components/Jumbotron/JumbotronModal/JumbotronModal";
 
 import * as actions from "../store/actions";
-import Data from "../dummyData.json";
 
 import Styles from "./Home.module.css";
 
 
 class Home extends Component {
+
+    componentDidMount(){
+        if (!this.props.timerOn) {
+            setInterval(() => this.props.onTimer(),5000)
+        }
+    }
+
     render () {
         let home = 
             <div className={Styles.Container}>
-                {(Data || []).map(item => (
+                {(this.props.data || []).map(item => (
                 <JumbotronContainer 
                     key={item.name}
                     name={item.name}
                     clients={item.clients}
-                    // onClick={() => this.props.onClickedJumbotron(item)}
                     onclick={() => this.props.onClickedJumbotron(item)}/>
                 ))}
             </div>  
@@ -40,14 +45,17 @@ class Home extends Component {
 const mapStateToProps = state => {
     return {
         showModal: state.main.showJumbotronModal,
-        clickedJumbotron: state.main.clickedJumbotron
+        clickedJumbotron: state.main.clickedJumbotron,
+        data: state.main.data,
+        timerOn: state.main.timerOn
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onClickedJumbotron: (jumbotronData) => dispatch(actions.jumbotronClicked(jumbotronData)),
-        onCloseJumbotronModal: () => dispatch(actions.closeJumbotronModal())
+        onCloseJumbotronModal: () => dispatch(actions.closeJumbotronModal()),
+        onTimer: () => dispatch(actions.timer())
     }
 }
 

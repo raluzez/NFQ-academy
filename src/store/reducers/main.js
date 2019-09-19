@@ -1,8 +1,25 @@
 import * as actionTypes from "../actions/actionTypes";
+import Data from "../../dummyData.json";
 
 const initialState = {
     clickedJumbotron: null,
-    showJumbotronModal: false
+    showJumbotronModal: false,
+    data: Data,
+    timerOn: false
+}
+
+const timerUpdate = (state) => {
+    const newData = [...state.data]
+    return newData.map(item => {
+        return {
+            ...item, 
+            clients: item.clients.map(client => {
+                return {
+                    ...client,
+                    timeLeft: (client.timeLeft -= (1/60)*5)
+                }})
+            }
+    })
 }
 
 const reducer = (state = initialState, action) => {
@@ -18,6 +35,13 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 showJumbotronModal: false,
                 clickedJumbotron: null
+            }
+        case actionTypes.TIMER_START:
+            const newData = timerUpdate(state)
+            return {
+                ...state,
+                data: newData,
+                timerOn: true
             }
         default: return state
     }

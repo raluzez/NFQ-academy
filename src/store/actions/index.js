@@ -1,4 +1,5 @@
 export {
     jumbotronClicked,
-    closeJumbotronModal
+    closeJumbotronModal,
+    timer
 } from "./main";
