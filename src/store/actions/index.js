@@ -7,5 +7,6 @@ export {
 } from "./main";
 
 export {
-    auth
+    auth,
+    resetError
 } from "./auth";
