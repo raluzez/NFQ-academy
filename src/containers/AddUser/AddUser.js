@@ -34,12 +34,12 @@ class AddUser extends Component {
         return (
             <>
             {this.props.buttonClicked 
-            ? <div className={Styles.Container}>
+            ? <div className={Styles.Container} style={{"marginTop":"6%"}}>
                 <Button variant="success" disabled>Registracija Sekminga</Button>
                 <Button variant="primary" disabled>
                     <p>{this.props.successData.specialistName}</p>
                     <p>{`Jūsų numeris ${this.props.successData.name}`}</p>
-                    <p>{`Liko laukti apie ${this.props.successData.timeLeft} min`}</p>
+                    <p>{`Liko laukti apie ${Math.ceil(this.props.successData.timeLeft, 1)} min`}</p>
                     <div><Spinner animation="grow" /></div>
                     <p>{this.state.timeLeft}</p>
                 </Button>

@@ -12,7 +12,7 @@ const navbar = () => (
             <Nav.Link eventKey="addUser" as={Link} to="/addUser">Greita registracija</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-            <Nav.Link eventKey="specialist" as={Link} to="/specialist">Specialistui</Nav.Link>
+            <Nav.Link eventKey="specialist" as={Link} to="/login">Prisijungti</Nav.Link>
         </Nav.Item>
     </Nav>
 )

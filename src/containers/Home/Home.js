@@ -17,6 +17,20 @@ class Home extends Component {
         }
     }
 
+    clickedJumbotronClients = (jumbotronName, data) => {
+        let clients = []
+        data.map(specialist => {
+            if(specialist.name === jumbotronName){
+                clients = specialist.clients
+            }
+            return null
+            // catch error and return else
+        }) 
+        return clients  
+    }
+
+    
+
     render () {
         let home = 
             <div className={Styles.Container}>
@@ -32,7 +46,7 @@ class Home extends Component {
             <>
                 {this.props.showModal 
                     ? <JumbotronModal 
-                        clients={this.props.clickedJumbotron.clients} 
+                        clients={this.clickedJumbotronClients(this.props.clickedJumbotron.name, this.props.data)} 
                         show={this.props.showModal} 
                         closeModal={() => this.props.onCloseJumbotronModal()}/>
                     : null}

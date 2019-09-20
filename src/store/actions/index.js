@@ -5,3 +5,7 @@ export {
     registerClient,
     closeSuccessScreen
 } from "./main";
+
+export {
+    auth
+} from "./auth";

@@ -8,7 +8,14 @@ const jumbotronContainer = (props) => {
     return(
     <>
         <Card className={Styles.JumbotronCard} onClick={props.onclick}>
-            <Card.Header style={{"backgroundColor": "rgb(231, 230, 230)"}}>{props.name}</Card.Header>
+            <Card.Header 
+                style={{
+                "backgroundColor": "#59A9FF",
+                "color":"white", 
+                "fontWeight":"bold"}}
+                >
+                    {props.name.toUpperCase()}
+            </Card.Header>
             <Card.Body className={Styles.Jumbotron}>
                 {props.clients.map(client => (
                     <div key={client.name} className={Styles.ClientInfo}>
