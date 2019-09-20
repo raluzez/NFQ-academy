@@ -5,9 +5,15 @@ import Styles from "./Jumbotron.module.css";
 
 const jumbotronContainer = (props) => {
     
+    let specialistStyle = null;
+
+    if(props.specialist){
+        specialistStyle = {"width":"50%", "fontSize":"150%"}
+    }
+
     return(
     <>
-        <Card className={Styles.JumbotronCard} onClick={props.onclick}>
+        <Card className={Styles.JumbotronCard} onClick={props.onclick} style={specialistStyle} >
             <Card.Header 
                 style={{
                 "backgroundColor": "#59A9FF",

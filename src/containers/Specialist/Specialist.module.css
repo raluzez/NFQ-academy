@@ -1,0 +1,33 @@
+.JumbotronContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.PacientContainer {
+    width:50%;
+    margin: auto;
+    margin-top: 2.5%;
+    border: 2px solid #59A9FF;
+    font-size: 150%;
+}
+
+.PacientContainerHeader {
+    color: white;
+    background-color: #73C586;
+    font-weight: bold;
+    text-align: center;
+}
+
+.PacientContainerBody div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.PacientContainerBody:first-child {
+    margin-top: 5%;
+}
+
+.PacientContainerBody div button {
+    width: 45%;
+}
