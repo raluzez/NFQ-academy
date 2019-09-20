@@ -8,5 +8,7 @@ export {
 
 export {
     auth,
-    resetError
+    resetError,
+    authCheckLogin,
+    logout
 } from "./auth";
