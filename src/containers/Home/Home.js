@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import JumbotronContainer from "../components/Jumbotron/Jumbotron";
-import JumbotronModal from "../components/Jumbotron/JumbotronModal/JumbotronModal";
+import JumbotronContainer from "../../components/Jumbotron/Jumbotron";
+import JumbotronModal from "../../components/Jumbotron/JumbotronModal/JumbotronModal";
 
-import * as actions from "../store/actions";
+import * as actions from "../../store/actions";
 
 import Styles from "./Home.module.css";
 

@@ -1,5 +1,7 @@
 export {
     jumbotronClicked,
     closeJumbotronModal,
-    timer
+    timer,
+    registerClient,
+    closeSuccessScreen
 } from "./main";
