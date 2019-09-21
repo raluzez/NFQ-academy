@@ -11,12 +11,6 @@ import Styles from "./Home.module.css";
 
 class Home extends Component {
 
-    componentDidMount(){
-        if (!this.props.timerOn) {
-            setInterval(() => this.props.onTimer(),5000)
-        }
-    }
-
     clickedJumbotronClients = (jumbotronName, data) => {
         let clients = []
         data.map(specialist => {
@@ -60,16 +54,14 @@ const mapStateToProps = state => {
     return {
         showModal: state.main.showJumbotronModal,
         clickedJumbotron: state.main.clickedJumbotron,
-        data: state.main.data,
-        timerOn: state.main.timerOn
+        data: state.main.data
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onClickedJumbotron: (jumbotronData) => dispatch(actions.jumbotronClicked(jumbotronData)),
-        onCloseJumbotronModal: () => dispatch(actions.closeJumbotronModal()),
-        onTimer: () => dispatch(actions.timer())
+        onCloseJumbotronModal: () => dispatch(actions.closeJumbotronModal())
     }
 }
 

@@ -13,7 +13,10 @@ const Specialist = React.lazy(() => import('./containers/Specialist/Specialist')
 class App extends Component {
 
     componentDidMount() {
-        this.props.onAutoSignin()
+        this.props.onAutoSignin();
+        if (!this.props.timerOn) {
+            setInterval(() => this.props.onTimer(),5000)
+        };
       };
 
     render () {
@@ -38,13 +41,15 @@ class App extends Component {
 
 const mapStateToProps = state => {
     return {
-        showNavbar: state.main.registrationSuccessful
+        showNavbar: state.main.registrationSuccessful,
+        timerOn: state.main.timerOn
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-      onAutoSignin: () => dispatch(actions.authCheckLogin())
+      onAutoSignin: () => dispatch(actions.authCheckLogin()),
+      onTimer: () => dispatch(actions.timer())
     }
   }
 

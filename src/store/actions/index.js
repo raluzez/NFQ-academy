@@ -3,7 +3,10 @@ export {
     closeJumbotronModal,
     timer,
     registerClient,
-    closeSuccessScreen
+    closeSuccessScreen,
+    callPatient,
+    patientServed,
+    addVisitTime
 } from "./main";
 
 export {

@@ -4,7 +4,8 @@ const initialState = {
     token: null,
     userId: null,
     error: null,
-    loading: false
+    loading: false,
+    specialistIndex: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -26,8 +27,19 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 token: action.idToken,
                 userId: action.userId,
-                error: null,
-                loading: false
+                error: null
+            }
+        case actionTypes.CHECK_SPECIALIST_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.error
+            }
+        case actionTypes.CHECK_SPECIALIST_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                specialistIndex: action.index
             }
         case actionTypes.RESET_ERROR:
             return {
@@ -40,7 +52,8 @@ const reducer = (state = initialState, action) => {
                 token: null,
                 userId: null,
                 error: null,
-                loading: false
+                loading: false,
+                specialistIndex: null
             }
         default : return state
     }

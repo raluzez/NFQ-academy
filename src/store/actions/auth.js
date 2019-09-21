@@ -18,7 +18,7 @@ export const authSuccess = (token, userId) => {
 export const authFail = (error) => {
     return {
       type: actionTypes.AUTH_FAIL,
-      error: error
+      error
     }
   }
 
@@ -41,12 +41,48 @@ export const auth = (email, password, login) => {
                 localStorage.setItem("expirationDate", expirationDate)
                 localStorage.setItem("userId", response.data.localId)
                 dispatch(authSuccess(response.data.idToken, response.data.localId))
+                dispatch(checkSpecialist(response.data.localId))
                 dispatch(checkAuthTimeout(response.data.expiresIn))
             })
             .catch(error => {
                 dispatch(authFail(error.response.data.error))
             })
     }
+}
+
+export const checkSpecialistFail = (error) => {
+    return {
+        type: actionTypes.CHECK_SPECIALIST_FAIL,
+        error
+    }
+}
+
+export const checkSpecialistSuccess = (index) => {
+    return {
+        type: actionTypes.CHECK_SPECIALIST_SUCCESS,
+        index
+    }
+}
+
+export const checkSpecialist = (userId) => {
+  return dispatch => {
+    axios.get("https://nfq-academy-ac4e1.firebaseio.com/specialists.json")
+      .then(response => {
+        let index = null
+        for (const id in response.data){
+          if( id === userId ){
+            index = response.data[id]
+            dispatch(checkSpecialistSuccess(index))
+          }
+        }
+        if (index === null) {
+          dispatch(checkSpecialistSuccess(null)
+          )}   
+      })
+      .catch(error => {
+        dispatch(checkSpecialistFail(error.response.data.error))
+    })
+  }
 }
 
 export const resetError = () => {
@@ -74,6 +110,7 @@ export const logout = () => {
   
 export const authCheckLogin = () => {
     return dispatch => {
+      dispatch(authStart())
       const token = localStorage.getItem("token")
       if (!token) {
         dispatch(logout())
@@ -82,6 +119,7 @@ export const authCheckLogin = () => {
         if (expirationDate > new Date()){
           const userId = localStorage.getItem("userId")
           dispatch(authSuccess(token, userId))
+          dispatch(checkSpecialist(userId))
           dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000))
         } else {
           dispatch(logout())

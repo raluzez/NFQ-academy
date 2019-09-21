@@ -30,3 +30,23 @@ export const closeSuccessScreen = () => {
         type: actionTypes.CLOSE_SUCCESS_SCREEN
     }
 }
+
+export const callPatient = () => {
+    return {
+        type: actionTypes.CALL_PATIENT
+    }
+}
+
+export const patientServed = (specialistIndex) => {
+    return {
+        type: actionTypes.PATIENT_SERVED,
+        specialistIndex
+    }
+}
+
+export const addVisitTime = (specialistIndex) => {
+    return {
+        type: actionTypes.ADD_VISIT_TIME,
+        specialistIndex
+    }
+}

@@ -14,7 +14,7 @@
 
 .PacientContainerHeader {
     color: white;
-    background-color: #73C586;
+    background-color: #59A9FF;
     font-weight: bold;
     text-align: center;
 }
@@ -22,10 +22,6 @@
 .PacientContainerBody div {
     display: flex;
     justify-content: space-between;
-}
-
-.PacientContainerBody:first-child {
-    margin-top: 5%;
 }
 
 .PacientContainerBody div button {
