@@ -8,19 +8,19 @@
                 "id":"000006"
                 },{
                 "name": 102,
-                "timeLeft": 15,
+                "timeLeft": 10,
                 "id":"000018"
                 },{
                 "name": 103,
-                "timeLeft": 25,
+                "timeLeft": 15,
                 "id":"000028"
                 },{
                 "name": 104,
-                "timeLeft": 35,
+                "timeLeft": 20,
                 "id":"000088"
                 },{
                 "name": 105,
-                "timeLeft": 45,
+                "timeLeft": 25,
                 "id":"000078"
                 }],
             "lastClientName": 105

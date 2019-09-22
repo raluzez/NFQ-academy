@@ -8,7 +8,11 @@ const initialState = {
     timerOn: false,
     registrationSuccessful: false,
     registrationSuccessData: {},
-    withPatient: false
+    withPatient: [
+        false,
+        false,
+        false
+    ]
 }
 
 const timerUpdate = (state) => {
@@ -87,12 +91,30 @@ const reducer = (state = initialState, action) => {
                 }
         // need to rewrite this case in more estetic way
         case actionTypes.CALL_PATIENT:
+            const timeTillVisit = state.data[action.index].clients[0].timeLeft
+            const newClientsTime = () => {
+                return state.data[action.index].clients.map(client => {
+                    client.timeLeft -= timeTillVisit
+                    return client
+                })
+            }
+            const updatedSpecialisData = {...state.data[action.index], clients: newClientsTime()}
+            const updateCallPatientData = () => {
+                return state.data.map(specialistData => {
+                    if(state.data.indexOf(specialistData) === action.index){
+                        return updatedSpecialisData
+                    } else { return specialistData }
+                })
+            }
+            let withPatientTrue = [...state.withPatient]
+            withPatientTrue[action.index] = true
             return {
                 ...state,
-                withPatient: true  
+                withPatient: withPatientTrue,
+                data: updateCallPatientData()
             }
         case actionTypes.PATIENT_SERVED:
-            const visitTimeLeft = state.data[action.specialistIndex].clients[0].timeLeft
+            const visitTimeLeft = state.data[action.specialistIndex].clients[0].timeLeft+state.data[action.specialistIndex].visitTime
             const leftClientsList = state.data[action.specialistIndex].clients.slice(1)
             const newClientsList = () => {
                 return leftClientsList.map(client => {
@@ -108,9 +130,11 @@ const reducer = (state = initialState, action) => {
                     } else { return specialistData }
                 })
             }
+            let withPatientFalse = [...state.withPatient]
+            withPatientFalse[action.specialistIndex] = false
             return {
                 ...state,
-                withPatient: false,
+                withPatient: withPatientFalse,
                 data: updateData()
             }
         case actionTypes.ADD_VISIT_TIME:

@@ -20,7 +20,7 @@ class Specialist extends Component {
         if(!this.props.loading){
             specialistPage =
                 <>
-                    {this.props.withPatient
+                    {this.props.withPatient[specialistIndex]
                     ? 
                     <Card className={Styles.PacientContainer}>
                         <Card.Header className={Styles.PacientContainerHeader} style={{"borderRadius": "0"}}>
@@ -32,7 +32,7 @@ class Specialist extends Component {
                                 <Button variant="success" size="lg" onClick={() => this.props.onPatientServed(specialistIndex)}>Aptarnauta</Button>
                             </div>
                             <div style={{"marginTop": "5%"}}>
-                                <Button variant="primary" size="lg" disabled>{`Liko ${Math.ceil(specialistData[specialistIndex].clients[0].timeLeft)} min`}</Button>
+                                <Button variant="primary" size="lg" disabled>{`Liko ${Math.ceil(specialistData[specialistIndex].clients[0].timeLeft+specialistData[specialistIndex].visitTime)} min`}</Button>
                                 <Button variant="danger" size="lg" onClick={() => this.props.onAddVisitTime(specialistIndex)}>+ 5 min</Button>
                             </div>
                         </Card.Body>
@@ -47,7 +47,7 @@ class Specialist extends Component {
                             ? 
                             <div style={{"marginTop": "2.5%"}}>
                                 <Button variant="primary" size="lg" disabled>{specialistData[specialistIndex].clients[0].name}</Button>
-                                <Button variant="success" size="lg" onClick={this.props.onCallPatient}>Kviesti</Button>
+                                <Button variant="success" size="lg" onClick={() => this.props.onCallPatient(this.props.specialistIndex)}>Kviesti</Button>
                             </div>
                             : 
                             <div style={{"marginTop": "2.5%"}}>
@@ -60,7 +60,7 @@ class Specialist extends Component {
                     <div className={Styles.JumbotronContainer}>
                         <JumbotronContainer
                             specialist={true}
-                            highlight={this.props.withPatient} // finish this
+                            highlight={this.props.withPatient[specialistIndex]} // finish this
                             key={specialistData[specialistIndex].name}
                             name={specialistData[specialistIndex].name}
                             clients={specialistData[specialistIndex].clients}/>
@@ -85,7 +85,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onCallPatient: () => dispatch(actions.callPatient()),
+        onCallPatient: (index) => dispatch(actions.callPatient(index)),
         onPatientServed: (specialistIndex) => dispatch(actions.patientServed(specialistIndex)),
         onAddVisitTime: (specialistIndex) => dispatch(actions.addVisitTime(specialistIndex))
     }

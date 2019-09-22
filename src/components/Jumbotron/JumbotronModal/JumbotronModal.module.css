@@ -46,6 +46,19 @@
     cursor: pointer;
 }
 
+.Blinking  {
+    animation-duration: 1s;
+    animation-name: blink;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes blink {
+    to{
+        color:green
+    }
+}
+
 @media (max-width:1700px){
     .JumbotronModal div{
         font-size: 750%;

@@ -23,18 +23,36 @@ class Home extends Component {
         return clients  
     }
 
+    checkWithPatient = () => {
+        let indexArray = []
+        this.props.withPatient.map((specialist, i) => { 
+            if(specialist){
+               indexArray.push(i)
+            }
+            return indexArray
+        })
+        return indexArray
+    }
     
-
     render () {
+        const indexArray = this.checkWithPatient()
         let home = 
             <div className={Styles.Container}>
-                {(this.props.data || []).map(item => (
+                {(this.props.data || []).map((item, i) =>{
+                let highlight = null
+                indexArray.map(index => {
+                    if(index === i){
+                        highlight = index
+                    } return highlight
+                })
+                return (
                 <JumbotronContainer 
                     key={item.name}
+                    highlight={highlight}
                     name={item.name}
                     clients={item.clients}
-                    onclick={() => this.props.onClickedJumbotron(item)}/>
-                ))}
+                    onclick={() => this.props.onClickedJumbotron(item, i)}/>
+                )})}
             </div>  
         return (         
             <>
@@ -42,7 +60,9 @@ class Home extends Component {
                     ? <JumbotronModal 
                         clients={this.clickedJumbotronClients(this.props.clickedJumbotron.name, this.props.data)} 
                         show={this.props.showModal} 
-                        closeModal={() => this.props.onCloseJumbotronModal()}/>
+                        closeModal={() => this.props.onCloseJumbotronModal()}
+                        highlightArr={indexArray}
+                        clickedIndex={this.props.clickedJumbotron.index}/>
                     : null}
                 {home}
             </>
@@ -54,13 +74,14 @@ const mapStateToProps = state => {
     return {
         showModal: state.main.showJumbotronModal,
         clickedJumbotron: state.main.clickedJumbotron,
-        data: state.main.data
+        data: state.main.data,
+        withPatient: state.main.withPatient
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onClickedJumbotron: (jumbotronData) => dispatch(actions.jumbotronClicked(jumbotronData)),
+        onClickedJumbotron: (jumbotronData, jumbotronIndex) => dispatch(actions.jumbotronClicked(jumbotronData, jumbotronIndex)),
         onCloseJumbotronModal: () => dispatch(actions.closeJumbotronModal())
     }
 }

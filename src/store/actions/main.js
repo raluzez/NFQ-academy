@@ -1,6 +1,7 @@
 import * as actionTypes from "./actionTypes";
 
-export const jumbotronClicked = (jumbotronData) => {
+export const jumbotronClicked = (jumbotronData, jumbotronIndex) => {
+    jumbotronData.index = jumbotronIndex
     return {
         type: actionTypes.JUMBOTRON_CLICKED,
         jumbotronData
@@ -31,9 +32,10 @@ export const closeSuccessScreen = () => {
     }
 }
 
-export const callPatient = () => {
+export const callPatient = (index) => {
     return {
-        type: actionTypes.CALL_PATIENT
+        type: actionTypes.CALL_PATIENT,
+        index
     }
 }
 

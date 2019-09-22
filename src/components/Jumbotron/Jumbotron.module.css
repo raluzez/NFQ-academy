@@ -42,3 +42,16 @@
     width: 100vh !important; 
     height: 100vh !important;
 }
+
+.Blinking  {
+    animation-duration: 1s;
+    animation-name: blink;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes blink {
+    to{
+        color:green
+    }
+}

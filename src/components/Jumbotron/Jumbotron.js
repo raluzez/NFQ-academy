@@ -11,6 +11,34 @@ const jumbotronContainer = (props) => {
         specialistStyle = {"width":"50%", "fontSize":"150%"}
     }
 
+    let clientsInfo  = 
+        props.clients.map(client => (
+            <div key={client.name} className={Styles.ClientInfo}>
+                <span>{client.name}</span>
+                <i className={`fas fa-arrow-right ${Styles.Arrow}`}></i>
+                <span>{Math.ceil(client.timeLeft,1)} min</span>
+            </div>             
+        ))  
+
+    if(props.clients[0]){
+        if(props.clients[0].timeLeft < 0) {
+        const firstClient =  props.clients[0]
+        clientsInfo[0] =
+            <div key={firstClient.name} className={Styles.ClientInfo}>
+                <span className={Styles.Blinking}>{firstClient.name}</span>
+                <i className={`fas fa-arrow-right ${Styles.Arrow} ${Styles.Blinking}`}></i>
+                <span className={Styles.Blinking}>{Math.ceil(firstClient.timeLeft,1)} min</span>
+            </div> 
+    }}
+
+    if (props.highlight || props.highlight === 0) {
+        const firstClient =  props.clients[0]
+             clientsInfo[0] = 
+                <div key={firstClient.name} className={Styles.ClientInfo} style={{"display":"block", "marginBottom":"2.5%"}}>
+                     <span style={{"color":"green","fontSize":"120%"}}>{firstClient.name}</span>
+                </div> 
+    }
+    
     return(
     <>
         <Card className={Styles.JumbotronCard} onClick={props.onclick} style={specialistStyle} >
@@ -23,12 +51,7 @@ const jumbotronContainer = (props) => {
                     {props.name.toUpperCase()}
             </Card.Header>
             <Card.Body className={Styles.Jumbotron}>
-                {props.clients.map(client => (
-                    <div key={client.name} className={Styles.ClientInfo}>
-                        <span>{client.name}</span>
-                        <i className={`fas fa-arrow-right ${Styles.Arrow}`}></i>
-                        <span>{Math.ceil(client.timeLeft,1)} min</span>
-                    </div>))}
+                {clientsInfo}
             </Card.Body>
         </Card> 
     </>
