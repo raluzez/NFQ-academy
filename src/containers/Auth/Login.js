@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {Redirect} from 'react-router-dom';
 import * as actions from "../../store/actions";
 
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form'
+import Form from 'react-bootstrap/Form';
 
 import Styles from "./Login.module.css";
 
@@ -68,10 +67,6 @@ class Login extends Component {
 
 
     render () {
-
-        if (this.props.token) {
-            return <Redirect to="/"/>
-        }
 
         let form
 
@@ -141,15 +136,16 @@ class Login extends Component {
                 </Card> 
         }
         return (
-            <>{form}</>
+            <>
+                {form}
+            </>
         )
     }
 }
 
 const mapStateToProps = state => {
     return {
-        error: state.auth.error,
-        token: state.auth.token
+        error: state.auth.error
     }
 }
 

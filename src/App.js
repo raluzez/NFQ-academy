@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import Navbar from "./components/Navbar/Navbar";
 import * as actions from "./store/actions";
@@ -9,6 +9,7 @@ const AddUser = React.lazy(() => import('./containers/AddUser/AddUser'));
 const Login = React.lazy(() => import('./containers/Auth/Login'));
 const Logout = React.lazy(() => import("./containers/Auth/Logout/Logout"));
 const Specialist = React.lazy(() => import('./containers/Specialist/Specialist'));
+const User = React.lazy(() => import('./containers/User/User'));
 
 class App extends Component {
 
@@ -20,18 +21,25 @@ class App extends Component {
       };
 
     render () {
+
         return (
             <div>
                 {!this.props.showNavbar
                     ? <Navbar/>
                     : null}
                 <main>
-                    <Route path="/" exact component={Home}/>
                     <Suspense fallback="...">
-                        <Route path="/addUser" component={AddUser}/>
-                        <Route path="/login" component={Login}/>
-                        <Route path="/logout" component={Logout}/>
-                        <Route path="/specialis" component={Specialist}/>
+                        <Switch>
+                            <Route path="/addUser" component={AddUser}/>
+                            {!this.props.token
+                            ?<Route path="/login" component={Login}/>
+                            :<Route path="/logout" component={Logout}/>}
+                            {this.props.specialistIndex !== null
+                            ?<Route path="/specialis" component={Specialist}/>
+                            :<Route path="/user" component={User}/>}
+                            <Route path="/" exact component={Home}/>
+                            <Redirect to="/"/>
+                        </Switch>
                     </Suspense> 
                 </main>         
             </div>
@@ -42,7 +50,10 @@ class App extends Component {
 const mapStateToProps = state => {
     return {
         showNavbar: state.main.registrationSuccessful,
-        timerOn: state.main.timerOn
+        timerOn: state.main.timerOn,
+        specialistIndex: state.auth.specialistIndex,
+        token: state.auth.token
+
     }
 }
 

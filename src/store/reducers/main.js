@@ -53,7 +53,7 @@ const reducer = (state = initialState, action) => {
             const lastClient = () => {
                 let lastClient = {
                     name: action.specialistData.lastClientName,
-                    timeLeft: -action.specialistData.visitTime
+                    timeLeft: action.specialistData.visitTime
                 }
                 if(action.specialistData.clients[action.specialistData.clients.length] > 0) {
                     lastClient = action.specialistData.clients[action.specialistData.clients.length-1]
@@ -116,13 +116,15 @@ const reducer = (state = initialState, action) => {
         case actionTypes.PATIENT_SERVED:
             const visitTimeLeft = state.data[action.specialistIndex].clients[0].timeLeft+state.data[action.specialistIndex].visitTime
             const leftClientsList = state.data[action.specialistIndex].clients.slice(1)
+            const servedPatient = state.data[action.specialistIndex].clients[0] 
+            console.log(state.data[action.specialistIndex].clients[0])
             const newClientsList = () => {
                 return leftClientsList.map(client => {
                     client.timeLeft -= visitTimeLeft
                     return client
                 })
             }
-            const newSpecialisData = {...state.data[action.specialistIndex], clients: newClientsList()}
+            const newSpecialisData = {...state.data[action.specialistIndex], clients: newClientsList(), servedPatients:state.data[action.specialistIndex].servedPatients.concat(servedPatient)}
             const updateData = () => {
                 return state.data.map(specialistData => {
                     if(state.data.indexOf(specialistData) === action.specialistIndex){

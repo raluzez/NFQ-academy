@@ -23,7 +23,8 @@
                 "timeLeft": 25,
                 "id":"000078"
                 }],
-            "lastClientName": 105
+            "lastClientName": 105,
+            "servedPatients": []
     },
     {
             "name": "Šeimos gydytojas 2",
@@ -37,7 +38,8 @@
                 "timeLeft": 10,
                 "id":"000007"
                 }],
-            "lastClientName": 202
+            "lastClientName": 202,
+            "servedPatients": []
     },
     {
             "name": "Ortopedas",
@@ -51,7 +53,8 @@
                 "timeLeft": 10,
                 "id":"000003"
                 }],
-            "lastClientName": 302
+            "lastClientName": 302,
+            "servedPatients": []
     }
 
 ]

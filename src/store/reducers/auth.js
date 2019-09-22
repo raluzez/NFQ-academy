@@ -27,7 +27,8 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 token: action.idToken,
                 userId: action.userId,
-                error: null
+                error: null,
+                isAuth: true
             }
         case actionTypes.CHECK_SPECIALIST_FAIL:
             return {

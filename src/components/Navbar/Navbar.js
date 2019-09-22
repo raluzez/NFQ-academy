@@ -11,24 +11,30 @@ const navbar = (props) => (
             <Nav.Link eventKey="home" as={NavLink} to="/" exact>Švieslentė</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-            <Nav.Link eventKey="addUser" as={NavLink} to="/addUser">Greita registracija</Nav.Link>
+            <Nav.Link eventKey="addUser" as={NavLink} to="/addUser" exact>Greita registracija</Nav.Link>
         </Nav.Item>
+        {props.specialistIndex !== null
+        ? <Nav.Item>
+            <Nav.Link eventKey="specialis" as={NavLink} to="/specialis" exact>Specialistui</Nav.Link>
+        </Nav.Item>
+        : <Nav.Item>
+            <Nav.Link eventKey="specialis" as={NavLink} to="/user" exact>Vartotojui</Nav.Link>
+        </Nav.Item>}
         {!props.token
         ?   <Nav.Item>
-                <Nav.Link eventKey="login" as={NavLink} to="/login">Prisijungti</Nav.Link>
+                <Nav.Link eventKey="login" as={NavLink} to="/login" exact>Prisijungti</Nav.Link>
             </Nav.Item>
-        :<> <Nav.Item>
-                <Nav.Link eventKey="logout" as={NavLink} to="/logout">Atsijungti</Nav.Link>
+        : <Nav.Item>
+                <Nav.Link eventKey="logout" as={NavLink} to="/logout" exact>Atsijungti</Nav.Link>
             </Nav.Item>
-            <Nav.Item>
-                <Nav.Link eventKey="specialis" as={NavLink} to="/specialis">Specialistui</Nav.Link>
-            </Nav.Item></>}  
+        } 
     </Nav>
 )
 
 const mapStateToProps = state => {
     return {
-        token: state.auth.token
+        token: state.auth.token,
+        specialistIndex: state.auth.specialistIndex
     }
 }
 
