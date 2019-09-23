@@ -1,4 +1,5 @@
 import * as actionTypes from "./actionTypes";
+import axios from "axios";
 
 export const jumbotronClicked = (jumbotronData, jumbotronIndex) => {
     jumbotronData.index = jumbotronIndex
@@ -39,10 +40,32 @@ export const callPatient = (index) => {
     }
 }
 
-export const patientServed = (specialistIndex) => {
+export const patientServedLocal = (specialistIndex, visitTime) => {
     return {
         type: actionTypes.PATIENT_SERVED,
-        specialistIndex
+        specialistIndex,
+        visitTime
+    }
+}
+
+export const patientSaveStart = () => {
+    return {
+        type:actionTypes.PATIENT_SAVE_START
+    }
+}
+
+export const patientSaved = (specialistIndex, visitTime, patient) => {
+    patient.timeLeft = visitTime
+    patient.specialistIndex = specialistIndex
+    return dispatch => {
+        dispatch(patientSaveStart())
+        console.log("before")
+        axios.post("https://nfq-academy-ac4e1.firebaseio.com/servedClients.json", patient)
+            .then(() => {
+                console.log("inthen")
+                dispatch(patientServedLocal(specialistIndex, visitTime))
+            })
+            .catch(error => dispatch(patientServedLocal(specialistIndex, visitTime)))
     }
 }
 

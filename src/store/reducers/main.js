@@ -117,10 +117,9 @@ const reducer = (state = initialState, action) => {
             const visitTimeLeft = state.data[action.specialistIndex].clients[0].timeLeft+state.data[action.specialistIndex].visitTime
             const leftClientsList = state.data[action.specialistIndex].clients.slice(1)
             const servedPatient = state.data[action.specialistIndex].clients[0] 
-            console.log(state.data[action.specialistIndex].clients[0])
             const newClientsList = () => {
                 return leftClientsList.map(client => {
-                    client.timeLeft -= visitTimeLeft
+                    client.timeLeft -= (visitTimeLeft-1)
                     return client
                 })
             }
@@ -132,12 +131,19 @@ const reducer = (state = initialState, action) => {
                     } else { return specialistData }
                 })
             }
+            console.log(updateData())
             let withPatientFalse = [...state.withPatient]
             withPatientFalse[action.specialistIndex] = false
             return {
                 ...state,
                 withPatient: withPatientFalse,
-                data: updateData()
+                data: updateData(),
+                loading: false
+            }
+        case actionTypes.PATIENT_SAVE_START:
+            return {
+                ...state,
+                loading: true
             }
         case actionTypes.ADD_VISIT_TIME:
             const dataWithAddedTime = () => {

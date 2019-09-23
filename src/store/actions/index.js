@@ -5,7 +5,7 @@ export {
     registerClient,
     closeSuccessScreen,
     callPatient,
-    patientServed,
+    patientSaved,
     addVisitTime
 } from "./main";
 

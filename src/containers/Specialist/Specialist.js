@@ -11,16 +11,32 @@ import Styles from "./Specialist.module.css";
 
 class Specialist extends Component {
 
+    state = {
+        callPatientDate: null
+    }
+
+    componentDidUpdate(){
+        
+    }
+
+    callPatientDateHandler = () => {
+        this.setState({callPatientDate: new Date()})
+    }
+
+    patientVisitTimeHandler = () => {
+        return (Math.ceil((new Date()-this.state.callPatientDate)/60000))
+    }
+
+    specialistIndex = get(this.props, 'specialistIndex')
+    
     render () {
-        const specialistIndex = get(this.props, 'specialistIndex')
-        const specialistData = get(this.props, 'data')
 
         let specialistPage = <p>Loading</p>
 
         if(!this.props.loading){
             specialistPage =
                 <>
-                    {this.props.withPatient[specialistIndex]
+                    {this.props.withPatient[this.specialistIndex]
                     ? 
                     <Card className={Styles.PacientContainer}>
                         <Card.Header className={Styles.PacientContainerHeader} style={{"borderRadius": "0"}}>
@@ -28,12 +44,17 @@ class Specialist extends Component {
                         </Card.Header>
                         <Card.Body className={Styles.PacientContainerBody}>
                             <div style={{"marginTop": "2.5%"}}>
-                                <Button variant="primary" size="lg" disabled>{specialistData[specialistIndex].clients[0].name}</Button>
-                                <Button variant="success" size="lg" onClick={() => this.props.onPatientServed(specialistIndex)}>Aptarnauta</Button>
+                                <Button variant="primary" size="lg" disabled>{this.props.data[this.specialistIndex].clients[0].name}</Button>
+                                <Button variant="success" size="lg" onClick={() => 
+                                    this.props.onPatientServed(
+                                            this.specialistIndex, 
+                                            this.patientVisitTimeHandler(), 
+                                            this.props.data[this.specialistIndex].clients[0])}>
+                                        Aptarnauta</Button>
                             </div>
                             <div style={{"marginTop": "5%"}}>
-                                <Button variant="primary" size="lg" disabled>{`Liko ${Math.ceil(specialistData[specialistIndex].clients[0].timeLeft+specialistData[specialistIndex].visitTime)} min`}</Button>
-                                <Button variant="danger" size="lg" onClick={() => this.props.onAddVisitTime(specialistIndex)}>+ 5 min</Button>
+                                <Button variant="primary" size="lg" disabled>{`Liko ${Math.ceil(this.props.data[this.specialistIndex].clients[0].timeLeft+this.props.data[this.specialistIndex].visitTime)} min`}</Button>
+                                <Button variant="danger" size="lg" onClick={() => this.props.onAddVisitTime(this.specialistIndex)}>+ 5 min</Button>
                             </div>
                         </Card.Body>
                     </Card>
@@ -43,11 +64,11 @@ class Specialist extends Component {
                                 PACIENTAS
                         </Card.Header>
                         <Card.Body className={Styles.PacientContainerBody}>
-                            {specialistData[specialistIndex].clients.length > 0
+                            {this.props.data[this.specialistIndex].clients.length > 0
                             ? 
                             <div style={{"marginTop": "2.5%"}}>
-                                <Button variant="primary" size="lg" disabled>{specialistData[specialistIndex].clients[0].name}</Button>
-                                <Button variant="success" size="lg" onClick={() => this.props.onCallPatient(this.props.specialistIndex)}>Kviesti</Button>
+                                <Button variant="primary" size="lg" disabled>{this.props.data[this.specialistIndex].clients[0].name}</Button>
+                                <Button variant="success" size="lg" onClick={() => this.props.onCallPatient(this.props.specialistIndex, this.callPatientDateHandler())}>Kviesti</Button>
                             </div>
                             : 
                             <div style={{"marginTop": "2.5%"}}>
@@ -57,14 +78,18 @@ class Specialist extends Component {
                         </Card.Body>
                     </Card>
                     }
-                    <div className={Styles.JumbotronContainer}>
+                    {this.props.mainLoading
+                    
+                    ? console.log(this.props.loading, this.props.data)
+                    : <div className={Styles.JumbotronContainer}>
+                        {console.log(this.props.data)}
                         <JumbotronContainer
                             specialist={true}
-                            highlight={this.props.withPatient[specialistIndex]} // finish this
-                            key={specialistData[specialistIndex].name}
-                            name={specialistData[specialistIndex].name}
-                            clients={specialistData[specialistIndex].clients}/>
-                    </div>
+                            highlight={this.props.withPatient[this.specialistIndex]} // finish this
+                            key={this.props.data[this.specialistIndex].name}
+                            name={this.props.data[this.specialistIndex].name}
+                            clients={this.props.data[this.specialistIndex].clients}/>
+                    </div>}
                 </>
         }
 
@@ -79,14 +104,15 @@ const mapStateToProps = state => {
         data: state.main.data,
         specialistIndex: state.auth.specialistIndex,
         loading: state.auth.loading,
-        withPatient: state.main.withPatient
+        withPatient: state.main.withPatient,
+        mainLoading: state.main.loading
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onCallPatient: (index) => dispatch(actions.callPatient(index)),
-        onPatientServed: (specialistIndex) => dispatch(actions.patientServed(specialistIndex)),
+        onPatientServed: (specialistIndex, visitTime, client) => dispatch(actions.patientSaved(specialistIndex, visitTime, client)),
         onAddVisitTime: (specialistIndex) => dispatch(actions.addVisitTime(specialistIndex))
     }
 } 

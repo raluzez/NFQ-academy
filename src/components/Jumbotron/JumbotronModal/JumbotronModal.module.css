@@ -59,7 +59,7 @@
     }
 }
 
-@media (max-width:1700px){
+@media (max-width:1920px){
     .JumbotronModal div{
         font-size: 750%;
     }
@@ -70,6 +70,20 @@
 
     .CloseIcon {
         font-size: 415%
+    }
+}
+
+@media (max-width:1000px){
+    .JumbotronModal div{
+        font-size: 563%;
+    }
+    
+    .JumbotronModal div:first-of-type {
+        font-size: 750%;
+    }
+
+    .CloseIcon {
+        font-size: 312%
     }
 }
 

@@ -56,7 +56,7 @@ class User extends Component {
                     {message}
                     <Form.Control size="lg" type="text" placeholder="Numeris" onChange={this.numberHandler} required/>
                     <Button variant="outline-success" size="lg" style={{"marginTop":"0%"}} onClick={this.checkNumber}>Patikrinti</Button> 
-                    <Button as={NavLink} to="/login" variant="outline-primary" size="lg" style={{"marginTop": "5%", "width": "30%"}}>Prisijungti</Button>                    
+                    <Button as={NavLink} to="/login" variant="outline-primary" size="lg" style={{"marginTop": "5%", "width": "50%"}}>Prisijungti</Button>                    
                 </Form>
                 </Card.Body>
             </Card>
@@ -88,6 +88,7 @@ class User extends Component {
 
         return (
             <>{user}</>
+            
         )
     }
 }

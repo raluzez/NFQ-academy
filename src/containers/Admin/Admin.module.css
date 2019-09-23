@@ -1,4 +1,4 @@
-.LoginContainer {
+.CheckNumberContainer {
     width:50%;
     margin: auto;
     margin-top: 2.5%;
@@ -6,24 +6,20 @@
     font-size: 150%;
 }
 
-.LoginHeader {
+.CheckNumberHeader {
     color: white;
     background-color: #73C586;
     font-weight: bold;
     text-align: center;
 }
 
-.Form {
+.Body {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.Form button {
-    margin-top: 5%;
-    width:50%;
-}
-
-.Form input {
-    margin-bottom:5%;
+.Body button {
+    margin-top: 2.5%;
+    width:75%;
 }

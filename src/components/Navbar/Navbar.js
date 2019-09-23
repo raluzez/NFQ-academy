@@ -14,11 +14,15 @@ const navbar = (props) => (
             <Nav.Link eventKey="addUser" as={NavLink} to="/addUser" exact>Greita registracija</Nav.Link>
         </Nav.Item>
         {props.specialistIndex !== null
-        ? <Nav.Item>
-            <Nav.Link eventKey="specialis" as={NavLink} to="/specialis" exact>Specialistui</Nav.Link>
-        </Nav.Item>
+        ? props.specialistIndex !== true 
+            ? <Nav.Item>
+                <Nav.Link eventKey="specialis" as={NavLink} to="/specialis" exact>Specialistui</Nav.Link>
+            </Nav.Item>
+            : <Nav.Item>
+                <Nav.Link eventKey="admin" as={NavLink} to="/admin" exact>Administratorius</Nav.Link>
+            </Nav.Item>
         : <Nav.Item>
-            <Nav.Link eventKey="specialis" as={NavLink} to="/user" exact>Vartotojui</Nav.Link>
+            <Nav.Link eventKey="user" as={NavLink} to="/user" exact>Vartotojui</Nav.Link>
         </Nav.Item>}
         {!props.token
         ?   <Nav.Item>

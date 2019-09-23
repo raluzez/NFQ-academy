@@ -10,6 +10,7 @@ const Login = React.lazy(() => import('./containers/Auth/Login'));
 const Logout = React.lazy(() => import("./containers/Auth/Logout/Logout"));
 const Specialist = React.lazy(() => import('./containers/Specialist/Specialist'));
 const User = React.lazy(() => import('./containers/User/User'));
+const Admin = React.lazy(() => import('./containers/Admin/Admin'));
 
 class App extends Component {
 
@@ -35,7 +36,9 @@ class App extends Component {
                             ?<Route path="/login" component={Login}/>
                             :<Route path="/logout" component={Logout}/>}
                             {this.props.specialistIndex !== null
-                            ?<Route path="/specialis" component={Specialist}/>
+                            ? this.props.specialistIndex !== true 
+                                ?<Route path="/specialis" component={Specialist}/>
+                                :<Route path="/admin" component={Admin}/>
                             :<Route path="/user" component={User}/>}
                             <Route path="/" exact component={Home}/>
                             <Redirect to="/"/>
