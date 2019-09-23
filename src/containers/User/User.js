@@ -2,6 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { NavLink } from 'react-router-dom';
 
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import lt from '@fullcalendar/core/locales/lt';
+import "../../components/Calendar/calendar.scss";
+
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -33,7 +38,10 @@ class User extends Component {
         })  
         if(!isExist) {this.setState({timeLeft:false, numberChecked:this.state.input})}    
     }
+    dateClick = (info) => {
 
+        console.log(info.event.start.getMonth()+1)
+    }
     render () {
 
         let message = null
@@ -85,6 +93,28 @@ class User extends Component {
                 </Card>
             </>
         }
+
+        user =  <div style={{"width":"50%", 'margin':'auto', 'marginTop': '2.5%'}}>
+                    <FullCalendar 
+                        defaultView="dayGridMonth" 
+                        plugins={[ dayGridPlugin ]} 
+                        locale={lt}
+                        weekends={false}
+                        header={{   
+                            left: '',
+                            center:'title',
+                            right: 'prev,next'}}
+                        eventClick={this.dateClick}
+                        events= {[
+                                {
+                                  start: '2019-09-02',
+                                  rendering: 'background',
+                                  backgroundColor:"red"
+                                }
+                                ]}
+                             />
+                </div>
+        
 
         return (
             <>{user}</>

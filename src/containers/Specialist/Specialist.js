@@ -15,10 +15,6 @@ class Specialist extends Component {
         callPatientDate: null
     }
 
-    componentDidUpdate(){
-        
-    }
-
     callPatientDateHandler = () => {
         this.setState({callPatientDate: new Date()})
     }
@@ -85,7 +81,7 @@ class Specialist extends Component {
                         {console.log(this.props.data)}
                         <JumbotronContainer
                             specialist={true}
-                            highlight={this.props.withPatient[this.specialistIndex]} // finish this
+                            highlight={this.props.withPatient[this.specialistIndex]}
                             key={this.props.data[this.specialistIndex].name}
                             name={this.props.data[this.specialistIndex].name}
                             clients={this.props.data[this.specialistIndex].clients}/>

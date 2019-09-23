@@ -8,6 +8,8 @@ const initialState = {
     timerOn: false,
     registrationSuccessful: false,
     registrationSuccessData: {},
+    loading: false,
+    error: null,
     withPatient: [
         false,
         false,
@@ -31,6 +33,23 @@ const timerUpdate = (state) => {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.FETCH_DATA_START:
+            return {
+                ...state,
+                loading: true
+            }
+        case actionTypes.FETCH_DATA_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.error
+            }
+        case actionTypes.FETCH_DATA_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.data
+            }
         case actionTypes.JUMBOTRON_CLICKED:
             return {
                 ...state,
@@ -50,44 +69,11 @@ const reducer = (state = initialState, action) => {
                 timerOn: true
             }
         case actionTypes.REGISTER_CLIENT:
-            const lastClient = () => {
-                let lastClient = {
-                    name: action.specialistData.lastClientName,
-                    timeLeft: action.specialistData.visitTime
-                }
-                if(action.specialistData.clients[action.specialistData.clients.length] > 0) {
-                    lastClient = action.specialistData.clients[action.specialistData.clients.length-1]
-                } 
-                return lastClient
-            }    
-            const clientName = lastClient().name+1
-            const timeLeft = lastClient().timeLeft + action.specialistData.visitTime
-            const client = {name:clientName, timeLeft:timeLeft}
-            const specialistIndex = () => {
-                let index = 0
-                for( let i=0; i< state.data.length; i++){
-                    if(state.data[i].name === action.specialistData.name){
-                        index = i
-                        break
-                    }
-                }
-                return index
-            }
-            const newClients = state.data[specialistIndex()].clients.concat(client)
-            let specialist = state.data[specialistIndex()]
-            let data = state.data
-            specialist.clients = newClients
-            specialist.lastClientName = clientName
-            data[specialistIndex()]= specialist 
             return {
                 ...state,
                 registrationSuccessful: true,
-                data: data,
-                registrationSuccessData: {
-                    name: clientName,
-                    timeLeft: timeLeft,
-                    specialistName : specialist.name
-                }
+                data: action.newData,
+                registrationSuccessData: action.registrationSuccessData
                 }
         // need to rewrite this case in more estetic way
         case actionTypes.CALL_PATIENT:

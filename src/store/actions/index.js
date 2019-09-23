@@ -6,7 +6,8 @@ export {
     closeSuccessScreen,
     callPatient,
     patientSaved,
-    addVisitTime
+    addVisitTime,
+    fetchData
 } from "./main";
 
 export {

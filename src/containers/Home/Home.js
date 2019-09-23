@@ -4,12 +4,18 @@ import { connect } from "react-redux";
 import JumbotronContainer from "../../components/Jumbotron/Jumbotron";
 import JumbotronModal from "../../components/Jumbotron/JumbotronModal/JumbotronModal";
 
+import Spinner from 'react-bootstrap/Spinner';
+
 import * as actions from "../../store/actions";
 
 import Styles from "./Home.module.css";
 
 
 class Home extends Component {
+
+    componentDidMount () {
+        this.props.onFetchData(this.props.key)
+    }
 
     clickedJumbotronClients = (jumbotronName, data) => {
         let clients = []
@@ -36,24 +42,29 @@ class Home extends Component {
     
     render () {
         const indexArray = this.checkWithPatient()
-        let home = 
+        let home = <div style={{"display": "flex", "alignItems": "center", "height": "50vh", "justifyContent": "center"}}><Spinner animation="grow" /></div>
+        
+        if(!this.props.loading){
+            home =
             <div className={Styles.Container}>
                 {(this.props.data || []).map((item, i) =>{
-                let highlight = null
-                indexArray.map(index => {
-                    if(index === i){
-                        highlight = index
-                    } return highlight
-                })
-                return (
-                <JumbotronContainer 
-                    key={item.name}
-                    highlight={highlight}
-                    name={item.name}
-                    clients={item.clients}
-                    onclick={() => this.props.onClickedJumbotron(item, i)}/>
-                )})}
-            </div>  
+                    let highlight = null
+                    indexArray.map(index => {
+                        if(index === i){
+                            highlight = index
+                        } return highlight
+                    })
+                    return (
+                    <JumbotronContainer 
+                        key={item.name}
+                        highlight={highlight}
+                        name={item.name}
+                        clients={item.clients}
+                        onclick={() => this.props.onClickedJumbotron(item, i)}/>
+                    )})}
+            </div> 
+        }
+     
         return (         
             <>
                 {this.props.showModal 
@@ -75,14 +86,16 @@ const mapStateToProps = state => {
         showModal: state.main.showJumbotronModal,
         clickedJumbotron: state.main.clickedJumbotron,
         data: state.main.data,
-        withPatient: state.main.withPatient
+        withPatient: state.main.withPatient,
+        loading: state.main.loading
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onClickedJumbotron: (jumbotronData, jumbotronIndex) => dispatch(actions.jumbotronClicked(jumbotronData, jumbotronIndex)),
-        onCloseJumbotronModal: () => dispatch(actions.closeJumbotronModal())
+        onCloseJumbotronModal: () => dispatch(actions.closeJumbotronModal()),
+        onFetchData: () => dispatch(actions.fetchData())
     }
 }
 
