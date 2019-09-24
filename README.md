@@ -1,6 +1,6 @@
 
 
-## Project to manage client / patient flows
+## Project to manage clients / patients flows
 
 Stack: React, Redux, React-Router, axios, firbase.
 
