@@ -17,12 +17,13 @@ class User extends Component {
     state = {
         numberChecked: null,
         timeLeft: null,
-        input: null
+        input: null,
+        isRegistration: false,
+        dayClicked: false
     }
 
     numberHandler = (event) => {
         this.setState({input: event.target.value})
-        console.log()
     }
 
     checkNumber = () => {
@@ -38,9 +39,17 @@ class User extends Component {
         })  
         if(!isExist) {this.setState({timeLeft:false, numberChecked:this.state.input})}    
     }
-    dateClick = (info) => {
 
-        console.log(info.event.start.getMonth()+1)
+    dateClick = (info) => {
+        this.setState({dateClicked: info.dateStr})
+    }
+
+    registrationHandler = (specialistIndex) => {
+        this.setState({isRegistration: specialistIndex})
+    }
+
+    backHandler = () => {
+        this.setState({isRegistration: false})
     }
     render () {
 
@@ -77,8 +86,15 @@ class User extends Component {
                             REGISTRUOTIS
                     </Card.Header>
                     <Card.Body >
-                        {this.props.data.map(specialistData => {
-                            return <Button key={specialistData.name} variant="outline-success" size="lg" style={{"width": "100%","marginBottom": "2.5%", "marginTop": "2.5%"}}>{specialistData.name}</Button>
+                        {this.props.data.map((specialistData, i) => {
+                            return <Button 
+                                        key={specialistData.name} 
+                                        variant="outline-success" 
+                                        size="lg" 
+                                        style={{"width": "100%","marginBottom": "2.5%", "marginTop": "2.5%"}}
+                                        onClick={()=>this.registrationHandler(i)}>
+                                            {specialistData.name}
+                                    </Button>
                         })}                   
                     </Card.Body>
                 </Card>  
@@ -87,35 +103,60 @@ class User extends Component {
                             JŪSŲ REGISTRACIJOS
                     </Card.Header>
                     <Card.Body >
-                        <Button variant="success" size="lg" style={{"width":"100%", "marginBottom" : "2.5%", "marginTop": "2.5%"}} disabled >145 {<i className={`fas fa-arrow-right ${Styles.Arrow}`}></i>}{` ${new Date().getHours()}:${new Date().getMinutes()} ${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()}`}</Button> 
-                        <Button variant="success" size="lg" style={{"width":"100%", "marginBottom" : "2.5%", "marginTop": "2.5%"}} disabled >205 {<i className={`fas fa-arrow-right ${Styles.Arrow}`}></i>}{` ${new Date().getHours()}:${new Date().getMinutes()} ${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()}`}</Button> 
+                        {!this.props.userRegistrations
+                            ? <Button 
+                                variant="danger" 
+                                size="lg" 
+                                style={{"width":"100%", "marginBottom" : "2.5%", "marginTop": "2.5%"}} 
+                                disabled >
+                                    Registracijų nerasta
+                                </Button>
+                            : this.props.userRegistrations.map( item =>
+                                (<Button 
+                                    variant="success" 
+                                    size="lg" style={{"width":"100%", "marginBottom" : "2.5%", "marginTop": "2.5%"}} 
+                                    disabled >
+                                        {item.name} 
+                                        {<i className={`fas fa-arrow-right ${Styles.Arrow}`}></i>}
+                                        {item.date}
+                                </Button> ))
+                        }
                     </Card.Body>
                 </Card>
             </>
         }
-
-        user =  <div style={{"width":"50%", 'margin':'auto', 'marginTop': '2.5%'}}>
-                    <FullCalendar 
-                        defaultView="dayGridMonth" 
-                        plugins={[ dayGridPlugin ]} 
-                        locale={lt}
-                        weekends={false}
-                        header={{   
-                            left: '',
-                            center:'title',
-                            right: 'prev,next'}}
-                        eventClick={this.dateClick}
-                        events= {[
-                                {
-                                  start: '2019-09-02',
-                                  rendering: 'background',
-                                  backgroundColor:"red"
-                                }
-                                ]}
-                             />
-                </div>
         
 
+     if(this.state.isRegistration || this.state.isRegistration === 0){
+            user =  <div style={{"width":"65%", 'margin':'auto', 'marginTop': '2.5%'}}>
+                        <FullCalendar 
+                            defaultView="dayGridMonth" 
+                            plugins={[ dayGridPlugin ]} 
+                            locale={lt}
+                            weekends={false}
+                            customButtons={{
+                                myCustomButton : {
+                                    text: 'Grįžti',
+                                    click : () => this.backHandler()
+                                }}
+                            }
+                            header={{   
+                                left: 'myCustomButton,timeGridDay',
+                                center:'title',
+                                right: 'prev,next'
+                            }}
+                            dateClick={(info) => console.log(info.dateStr)}
+                            events= {[
+                                    {
+                                    start: '2019-09-24',
+                                    end:'2019-09-25',
+                                    rendering: 'background',
+                                    backgroundColor:"green"
+                                    }
+                                    ]}
+                                />
+                </div>
+        }
         return (
             <>{user}</>
             
@@ -129,13 +170,5 @@ const mapStateToProps = state => {
         data: state.main.data
     }
 }
-
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         onCallPatient: (index) => dispatch(actions.callPatient(index)),
-//         onPatientServed: (specialistIndex) => dispatch(actions.patientServed(specialistIndex)),
-//         onAddVisitTime: (specialistIndex) => dispatch(actions.addVisitTime(specialistIndex))
-//     }
-// } 
 
 export default connect(mapStateToProps)(User);

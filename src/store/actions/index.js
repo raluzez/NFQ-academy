@@ -7,7 +7,8 @@ export {
     callPatient,
     patientSaved,
     addVisitTime,
-    fetchData
+    fetchData,
+    fetchServedPatients
 } from "./main";
 
 export {

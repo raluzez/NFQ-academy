@@ -6,6 +6,7 @@ import * as actions from "../../store/actions";
 import JumbotronContainer from "../../components/Jumbotron/Jumbotron";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Spinner from 'react-bootstrap/Spinner';
 
 import Styles from "./Specialist.module.css";
 
@@ -42,10 +43,14 @@ class Specialist extends Component {
                             <div style={{"marginTop": "2.5%"}}>
                                 <Button variant="primary" size="lg" disabled>{this.props.data[this.specialistIndex].clients[0].name}</Button>
                                 <Button variant="success" size="lg" onClick={() => 
-                                    this.props.onPatientServed(
+                                    {console.log("labas")
+                                        this.props.onPatientServed(
                                             this.specialistIndex, 
                                             this.patientVisitTimeHandler(), 
-                                            this.props.data[this.specialistIndex].clients[0])}>
+                                            this.props.data[this.specialistIndex].clients[0],
+                                            this.props.dataKey,
+                                            this.props.data,
+                                            this.props.withPatient)}}>
                                         Aptarnauta</Button>
                             </div>
                             <div style={{"marginTop": "5%"}}>
@@ -76,9 +81,10 @@ class Specialist extends Component {
                     }
                     {this.props.mainLoading
                     
-                    ? console.log(this.props.loading, this.props.data)
+                    ? <div style={{"display": "flex", "alignItems": "center", "height": "50vh", "justifyContent": "center"}}>
+                        <Spinner animation="grow" />
+                    </div>
                     : <div className={Styles.JumbotronContainer}>
-                        {console.log(this.props.data)}
                         <JumbotronContainer
                             specialist={true}
                             highlight={this.props.withPatient[this.specialistIndex]}
@@ -101,14 +107,15 @@ const mapStateToProps = state => {
         specialistIndex: state.auth.specialistIndex,
         loading: state.auth.loading,
         withPatient: state.main.withPatient,
-        mainLoading: state.main.loading
+        mainLoading: state.main.loading,
+        dataKey: state.main.dataKey
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onCallPatient: (index) => dispatch(actions.callPatient(index)),
-        onPatientServed: (specialistIndex, visitTime, client) => dispatch(actions.patientSaved(specialistIndex, visitTime, client)),
+        onPatientServed: (specialistIndex, visitTime, client, dataKey, data, withPatient) => dispatch(actions.patientSaved(specialistIndex, visitTime, client, dataKey, data, withPatient)),
         onAddVisitTime: (specialistIndex) => dispatch(actions.addVisitTime(specialistIndex))
     }
 } 

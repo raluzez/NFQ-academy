@@ -14,7 +14,8 @@ const initialState = {
         false,
         false,
         false
-    ]
+    ],
+    servedPatients:[[],[],[]]
 }
 
 const timerUpdate = (state) => {
@@ -48,7 +49,8 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                data: action.data
+                data: action.data,
+                dataKey: action.dataKey
             }
         case actionTypes.JUMBOTRON_CLICKED:
             return {
@@ -73,9 +75,9 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 registrationSuccessful: true,
                 data: action.newData,
-                registrationSuccessData: action.registrationSuccessData
+                registrationSuccessData: action.registrationSuccessData,
+                dataKey: action.dataKey
                 }
-        // need to rewrite this case in more estetic way
         case actionTypes.CALL_PATIENT:
             const timeTillVisit = state.data[action.index].clients[0].timeLeft
             const newClientsTime = () => {
@@ -100,31 +102,13 @@ const reducer = (state = initialState, action) => {
                 data: updateCallPatientData()
             }
         case actionTypes.PATIENT_SERVED:
-            const visitTimeLeft = state.data[action.specialistIndex].clients[0].timeLeft+state.data[action.specialistIndex].visitTime
-            const leftClientsList = state.data[action.specialistIndex].clients.slice(1)
-            const servedPatient = state.data[action.specialistIndex].clients[0] 
-            const newClientsList = () => {
-                return leftClientsList.map(client => {
-                    client.timeLeft -= (visitTimeLeft-1)
-                    return client
-                })
-            }
-            const newSpecialisData = {...state.data[action.specialistIndex], clients: newClientsList(), servedPatients:state.data[action.specialistIndex].servedPatients.concat(servedPatient)}
-            const updateData = () => {
-                return state.data.map(specialistData => {
-                    if(state.data.indexOf(specialistData) === action.specialistIndex){
-                        return newSpecialisData
-                    } else { return specialistData }
-                })
-            }
-            console.log(updateData())
-            let withPatientFalse = [...state.withPatient]
-            withPatientFalse[action.specialistIndex] = false
+            //finish
             return {
                 ...state,
-                withPatient: withPatientFalse,
-                data: updateData(),
-                loading: false
+                withPatient: action.withPatient,
+                data: action.newData,
+                loading: false,
+                dataKey: action.dataKey
             }
         case actionTypes.PATIENT_SAVE_START:
             return {
@@ -154,6 +138,35 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 registrationSuccessful: false,
                 specialistData: null
+            }
+        case actionTypes.FETCH_SERVED_PATIENTS_START:
+            return {
+                ...state,
+                loading: true,
+                servedPatients:[[],[],[]]
+            }
+        case actionTypes.FETCH_SERVED_PATIENTS_FAIL:
+            return {
+                ...state,
+                error: action.error,
+                loading: false
+            }
+        case actionTypes.FETCH_SERVED_PATIENTS_SUCCESS:
+            const fetchedservedPatients = state.servedPatients
+            state.servedPatients.map((item, i)=>{
+                return action.patientsArr.map(patient => {
+                    if (patient.specialistIndex === i){
+                        fetchedservedPatients[i].push(patient)
+                    }
+                    return item
+                })
+            })
+            console.log(fetchedservedPatients)
+            return {
+                ...state,
+                loading: false,
+                servedPatients: fetchedservedPatients
+
             }
         default: return state
     }

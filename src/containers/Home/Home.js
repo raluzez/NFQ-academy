@@ -42,7 +42,10 @@ class Home extends Component {
     
     render () {
         const indexArray = this.checkWithPatient()
-        let home = <div style={{"display": "flex", "alignItems": "center", "height": "50vh", "justifyContent": "center"}}><Spinner animation="grow" /></div>
+        let home = 
+            <div style={{"display": "flex", "alignItems": "center", "height": "50vh", "justifyContent": "center"}}>
+                <Spinner animation="grow" />
+            </div>
         
         if(!this.props.loading){
             home =

@@ -14,10 +14,11 @@ export const fetchDataFail = (error) => {
     }
 }
 
-export const fetchDataSuccess = (data) => {
+export const fetchDataSuccess = (data, dataKey) => {
     return {
         type: actionTypes.FETCH_DATA_SUCCESS,
-        data
+        data,
+        dataKey
     }
 }
 
@@ -26,9 +27,9 @@ export const fetchData = () => {
         dispatch(fetchDataStart())
         axios.get('https://nfq-academy-ac4e1.firebaseio.com/data.json')
             .then(response => {
-                // const arr = Object.keys(response.data)[0]
+                const dataKey = Object.keys(response.data)[0]
                 // const data = response.data[arr]
-                dispatch(fetchDataSuccess(response.data[Object.keys(response.data)[0]])
+                dispatch(fetchDataSuccess(response.data[Object.keys(response.data)[0]], dataKey)
             )})
             .catch(error => {
                 console.log(error)
@@ -56,13 +57,13 @@ export const timer = () => {
     }
 }
 
-export const registerClient = (data,specialistData) => {
+export const registerClient = (data, specialistData, dataKey) => {
     const lastClient = () => {
         let lastClient = {
             name: specialistData.lastClientName,
             timeLeft: specialistData.visitTime
         }
-        if(specialistData.clients[specialistData.clients.length] > 0) {
+        if(specialistData.clients.length > 0) {
             lastClient = specialistData.clients[specialistData.clients.length-1]
         } 
         return lastClient
@@ -90,24 +91,28 @@ export const registerClient = (data,specialistData) => {
     specialist.clients = newClients
     specialist.lastClientName = clientName
     newData[specialistIndex()] = specialist
-    
     return dispatch =>{
-    axios.delete('https://nfq-academy-ac4e1.firebaseio.com/data.json')
-        .then(axios.post('https://nfq-academy-ac4e1.firebaseio.com/data.json',newData)
+        axios.post('https://nfq-academy-ac4e1.firebaseio.com/data.json',newData)
+         .then(response => {
+            const newDataKey = response.data.name
+            return (
+            axios.delete(`https://nfq-academy-ac4e1.firebaseio.com/data/${dataKey}.json`)
             .then(() =>  {
-                dispatch(registerClientSuccess(specialistData, newData, registrationSuccessData))
-                }))
+                dispatch(registerClientSuccess(specialistData, newData, registrationSuccessData, newDataKey))
+                })
             .catch(error => console.log(error))
+              )} )  
         .catch(error => console.log(error))
     }
 }
 
-export const registerClientSuccess = (specialistData, newData, registrationSuccessData) => {
+export const registerClientSuccess = (specialistData, newData, registrationSuccessData, dataKey) => {
     return {
         type: actionTypes.REGISTER_CLIENT,
         specialistData,
         newData,
-        registrationSuccessData
+        registrationSuccessData,
+        dataKey
 }}
 
 export const closeSuccessScreen = () => {
@@ -123,11 +128,19 @@ export const callPatient = (index) => {
     }
 }
 
-export const patientServedLocal = (specialistIndex, visitTime) => {
+export const patientServedSuccess = (newData, visitTime, dataKey, withPatient) => {
     return {
         type: actionTypes.PATIENT_SERVED,
-        specialistIndex,
-        visitTime
+        newData,
+        visitTime,
+        dataKey,
+        withPatient
+    }
+}
+
+export const patientServedFail = (error) => {
+    return {
+        type:actionTypes.PATIENT_SERVED_FAIL
     }
 }
 
@@ -137,18 +150,76 @@ export const patientSaveStart = () => {
     }
 }
 
-export const patientSaved = (specialistIndex, visitTime, patient) => {
+export const patientSaved = (specialistIndex, visitTime, patient, dataKey, data, withPatient) => {
     patient.timeLeft = visitTime
     patient.specialistIndex = specialistIndex
+    const clientsArray = data[specialistIndex].clients.slice(1)
+    const newData = data
+    newData[specialistIndex].clients = clientsArray
+    let timeSubstract = 0
+    if(newData[specialistIndex].clients[0].timeLeft){
+        timeSubstract = newData[specialistIndex].clients[0].timeLeft
+    } 
+    newData[specialistIndex].clients.map((item,i) =>(
+        newData[specialistIndex].clients[i].timeLeft=item.timeLeft-timeSubstract
+    ))
+    let withPatientFalse = withPatient
+    withPatientFalse[specialistIndex] = false
+
     return dispatch => {
         dispatch(patientSaveStart())
-        console.log("before")
         axios.post("https://nfq-academy-ac4e1.firebaseio.com/servedClients.json", patient)
-            .then(() => {
-                console.log("inthen")
-                dispatch(patientServedLocal(specialistIndex, visitTime))
+            .then(() => 
+                axios.post(`https://nfq-academy-ac4e1.firebaseio.com/data.json`,newData)
+                    .then(response => { 
+                        const newDataKey = response.data.name
+                        return(
+                        axios.delete(`https://nfq-academy-ac4e1.firebaseio.com/data/${dataKey}.json`)
+                            .then( () => dispatch(patientServedSuccess(newData, visitTime, newDataKey, withPatient)))
+                            .catch(error => console.log(error)))}
+                    )
+                    .catch(error => console.log(error))
+            )
+            .catch(error => dispatch(patientServedFail()))
+    }
+}
+
+export const  fetchServedPatientsStart = () => {
+    return {
+        type: actionTypes.FETCH_SERVED_PATIENTS_START
+    }
+}
+
+export const fetchServedPatientsFail = (error) => {
+    return {
+        type: actionTypes.FETCH_SERVED_PATIENTS_FAIL,
+        error
+    }
+}
+
+export const fecthServedPatientsSuccess = (patientsArr) => {
+    return {
+        type: actionTypes.FETCH_SERVED_PATIENTS_SUCCESS,
+        patientsArr
+    }
+}
+
+export const fetchServedPatients = () => {
+    return dispatch => {
+        dispatch(fetchServedPatientsStart())
+        axios.get("https://nfq-academy-ac4e1.firebaseio.com/servedClients.json")
+            .then( res => {
+                const fetchedPatients = []
+                for (const key in res.data) {
+                    fetchedPatients.push({
+                    ...res.data[key],
+                    key: key})
+                }
+                dispatch(fecthServedPatientsSuccess(fetchedPatients))
             })
-            .catch(error => dispatch(patientServedLocal(specialistIndex, visitTime)))
+            .catch ( error => {
+                dispatch(fetchServedPatientsFail(error))
+            })
     }
 }
 

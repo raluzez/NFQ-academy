@@ -28,7 +28,7 @@ class App extends Component {
                 {!this.props.showNavbar
                     ? <Navbar/>
                     : null}
-                <main>
+                <main style={{"overflow": "hidden"}}>
                     <Suspense fallback="...">
                         <Switch>
                             <Route path="/addUser" component={AddUser}/>

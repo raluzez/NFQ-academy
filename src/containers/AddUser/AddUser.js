@@ -47,7 +47,7 @@ class AddUser extends Component {
             : <div className={Styles.Container}>
                 <Button variant="primary" disabled>Pasirinkite specialistą</Button>
                 {this.props.data.map(item => (
-                    <Button variant="outline-success" onClick={() => {this.props.onRegisterClient(this.props.data, item); this.startTimer()}} key={item.name}>{item.name}</Button>
+                    <Button variant="outline-success" onClick={() => {this.props.onRegisterClient(this.props.data, item, this.props.dataKey); this.startTimer()}} key={item.name}>{item.name}</Button>
                 ))}
               </div>}
             </>
@@ -59,13 +59,14 @@ const mapStateToProps = state => {
     return {
         data: state.main.data,
         buttonClicked: state.main.registrationSuccessful,
-        successData: state.main.registrationSuccessData
+        successData: state.main.registrationSuccessData,
+        dataKey: state.main.dataKey
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onRegisterClient: (data, specialistData) => dispatch(actions.registerClient(data, specialistData)),
+        onRegisterClient: (data, specialistData, dataKey) => dispatch(actions.registerClient(data, specialistData, dataKey)),
         onCloseSuccessScreen: () => dispatch(actions.closeSuccessScreen())
     }
 }
