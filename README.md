@@ -1,8 +1,8 @@
 
 
-## Project to manage client / patient flows
+## Project to manage clients / patients flows
 
-Stack: React, Redux, React-Router, axios, firbase.
+Stack: React, Redux, React-Router, axios, firebase.
 
 ### Test Accounts {email : password}
 
