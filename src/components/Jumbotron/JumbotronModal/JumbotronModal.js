@@ -6,7 +6,7 @@ const jumbotronModal = (props) => {
 
     let clientsInfo =
         props.clients.map(client => (
-            <div key={client.id} className={Styles.ClientInfo}>
+            <div key={client.name} className={Styles.ClientInfo}>
                 <span>{client.name}</span>
                 <i className={`fas fa-arrow-right ${Styles.Arrow}`}></i>
                 <span>{Math.ceil(client.timeLeft,1)} min</span>

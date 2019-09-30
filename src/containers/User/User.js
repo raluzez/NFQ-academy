@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import lt from '@fullcalendar/core/locales/lt';
 import "../../components/Calendar/calendar.scss";
 
@@ -19,7 +20,8 @@ class User extends Component {
         timeLeft: null,
         input: null,
         isRegistration: false,
-        dayClicked: false
+        dayClicked: false,
+        date: new Date()
     }
 
     numberHandler = (event) => {
@@ -40,10 +42,6 @@ class User extends Component {
         if(!isExist) {this.setState({timeLeft:false, numberChecked:this.state.input})}    
     }
 
-    dateClick = (info) => {
-        this.setState({dateClicked: info.dateStr})
-    }
-
     registrationHandler = (specialistIndex) => {
         this.setState({isRegistration: specialistIndex})
     }
@@ -51,6 +49,11 @@ class User extends Component {
     backHandler = () => {
         this.setState({isRegistration: false})
     }
+
+    dayClickedHandler = (date) => {
+        this.setState({dayClicked: !this.state.dayClicked, date: date})
+    }
+
     render () {
 
         let message = null
@@ -62,6 +65,8 @@ class User extends Component {
         if(this.state.timeLeft === false){
             message = <Button variant="danger" size="lg" style={{"width":"100%", "marginBottom" : "5%", "marginTop":"2.5%"}} disabled ><p>{`${this.state.numberChecked} vizito šiandien nėra`}</p><p>Prisijunkite norėdami sužinoti daugiau</p></Button>
         }
+
+        let dayGrid = null
 
         let user = 
             <Card className={Styles.CheckNumberContainer}>
@@ -131,7 +136,9 @@ class User extends Component {
             user =  <div style={{"width":"65%", 'margin':'auto', 'marginTop': '2.5%'}}>
                         <FullCalendar 
                             defaultView="dayGridMonth" 
-                            plugins={[ dayGridPlugin ]} 
+                            plugins={[dayGridPlugin]
+                                // ,[interactionPlugin]
+                            } 
                             locale={lt}
                             weekends={false}
                             customButtons={{
@@ -141,15 +148,16 @@ class User extends Component {
                                 }}
                             }
                             header={{   
-                                left: 'myCustomButton,timeGridDay',
+                                left: 'myCustomButton',
                                 center:'title',
                                 right: 'prev,next'
                             }}
-                            dateClick={(info) => console.log(info.dateStr)}
+                            eventClick ={
+                                (info) => this.dayClickedHandler(info.event.start)
+                            }
                             events= {[
                                     {
-                                    start: '2019-09-24',
-                                    end:'2019-09-25',
+                                    start: "2019-09-24",
                                     rendering: 'background',
                                     backgroundColor:"green"
                                     }
@@ -157,8 +165,61 @@ class User extends Component {
                                 />
                 </div>
         }
+
+        if(this.state.dayClicked){
+            user = null
+            let date = "2019-09-30T09:00:00"
+            dayGrid = <div style={{"width":"65%", 'margin':'auto', 'marginTop': '2.5%'}}>
+                    <FullCalendar 
+                        plugins={[timeGridPlugin]} 
+                        defaultView={'timeGridDay'}
+                        defaultDate={this.state.date}
+                        locale={lt}
+                        customButtons={{
+                            myCustomButton : {
+                                text: 'Grįžti',
+                                click : () => this.dayClickedHandler()
+                            }}
+                        }
+                        header={{   
+                            left: 'myCustomButton',
+                            center:'title',
+                            right: ''
+                        }}
+                        allDaySlot={false}
+                        minTime="09:00:00"
+                        maxTime="17:00:00"
+                        slotDuration="00:15:00"
+                        slotLabelFormat={
+                            {hour: 'numeric',
+                            minute: '2-digit'}
+                        }
+                        events= {[
+                            {
+                                start: date,
+                                end: "2019-09-30T09:15:00",
+                                rendering: 'background',
+                                backgroundColor:"green"
+                            },
+                            {
+                                start: "2019-09-30T12:00:00",
+                                end: "2019-09-30T12:15:00",
+                                rendering: 'background',
+                                backgroundColor:"green"
+                            }]
+                        }
+                        eventClick ={
+                                (info) => {date = info.event.start; console.log(date)}
+                            }
+                            />
+                    </div>
+        }
+
         return (
-            <>{user}</>
+            <>
+                {user}
+                {dayGrid}
+            </>
             
         )
     }
