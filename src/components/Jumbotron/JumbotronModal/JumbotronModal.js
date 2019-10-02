@@ -5,7 +5,7 @@ import Styles from "./JumbotronModal.module.css";
 const jumbotronModal = (props) => {
 
     let clientsInfo =
-        props.clients.map(client => (
+        props.clients.slice(0,5).map(client => (
             <div key={client.name} className={Styles.ClientInfo}>
                 <span>{client.name}</span>
                 <i className={`fas fa-arrow-right ${Styles.Arrow}`}></i>

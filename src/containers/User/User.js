@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
 import lt from '@fullcalendar/core/locales/lt';
 import "../../components/Calendar/calendar.scss";
 
@@ -21,7 +22,86 @@ class User extends Component {
         input: null,
         isRegistration: false,
         dayClicked: false,
-        date: new Date()
+        date: new Date(),
+        events:[],
+        dayEvents:[]
+    }
+
+    componentDidMount(){
+        this.createCalendarEvents()
+    }
+
+    createCalendarEvents = () => {
+        const daysInMonth = {
+            1:31, 2:28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31
+        }
+        const events = []
+        const date = new Date()
+        Object.keys(daysInMonth).map(monthNumber => {
+            if(date.getMonth()+1 < monthNumber){
+                    for (let i = 1; i <= daysInMonth[monthNumber]; i++){
+                        let month = monthNumber
+                        let day = i
+                        if( monthNumber<10 ){
+                            month = `0${monthNumber}`
+                        }
+                        if( i<10 ){
+                            day = `0${i}`
+                        }
+                        events.push({
+                                start:`2019-${month}-${day}`,
+                                rendering:"background",
+                                overlap:false,
+                                allDay:true,
+                                backgroundColor:"green"
+                                
+                            })
+                    }
+            } else if(date.getMonth()+1 === Number(monthNumber)){
+                for (let i = date.getDate(); i <= daysInMonth[monthNumber]; i++){
+                    let month = monthNumber
+                    let day = i
+                    if( monthNumber<10 ){
+                        month = `0${monthNumber}`
+                    }
+                    if( i<10 ){
+                        day = `0${i}`
+                    }
+                    events.push({
+                            start:`2019-${month}-${day}`,
+                            rendering:"background",
+                            overlap:false,
+                            allDay:true,
+                            backgroundColor:"green"
+                            
+                        })
+                    }
+
+            }
+            return events
+        })
+        this.setState({events:events})
+    }
+
+    createDayEvents = (date) => {
+        const dayEvents =[]
+        if(date!==null){
+            date.setHours( date.getHours()+9)
+            while (Number(date.getHours())<17){
+                console.log(date)
+                let endDate = new Date(date)
+                console.log(endDate)
+                endDate.setMinutes(endDate.getMinutes()+15)
+                dayEvents.push({
+                    start:date,
+                    end:endDate,
+                    backgroundColor:"#B1D8B2",
+                    borderColor:"#73C586"
+                })
+                date = new Date(endDate)
+            }
+            this.setState({dayEvents:dayEvents})
+        } 
     }
 
     numberHandler = (event) => {
@@ -51,11 +131,12 @@ class User extends Component {
     }
 
     dayClickedHandler = (date) => {
+        this.createDayEvents(date)
         this.setState({dayClicked: !this.state.dayClicked, date: date})
     }
 
     render () {
-
+        
         let message = null
 
         if(this.state.timeLeft){
@@ -133,14 +214,15 @@ class User extends Component {
         
 
      if(this.state.isRegistration || this.state.isRegistration === 0){
-            user =  <div style={{"width":"65%", 'margin':'auto', 'marginTop': '2.5%'}}>
+            user =  <div style={{"width":"70%", 'margin':'auto', 'marginTop': '2.5%'}}>
                         <FullCalendar 
                             defaultView="dayGridMonth" 
-                            plugins={[dayGridPlugin]
-                                // ,[interactionPlugin]
-                            } 
+                            plugins={[dayGridPlugin, interactionPlugin]} 
                             locale={lt}
                             weekends={false}
+                            showNonCurrentDates={false}
+                            fixedWeekCount={false}
+                            aspectRatio={1.75}
                             customButtons={{
                                 myCustomButton : {
                                     text: 'Grįžti',
@@ -152,23 +234,15 @@ class User extends Component {
                                 center:'title',
                                 right: 'prev,next'
                             }}
-                            eventClick ={
-                                (info) => this.dayClickedHandler(info.event.start)
-                            }
-                            events= {[
-                                    {
-                                    start: "2019-09-24",
-                                    rendering: 'background',
-                                    backgroundColor:"green"
-                                    }
-                                    ]}
+                            events= {this.state.events}
+                            dateClick ={info =>  this.dayClickedHandler(info.date)}
+                            
                                 />
-                </div>
+                    </div>
         }
 
         if(this.state.dayClicked){
             user = null
-            let date = "2019-09-30T09:00:00"
             dayGrid = <div style={{"width":"65%", 'margin':'auto', 'marginTop': '2.5%'}}>
                     <FullCalendar 
                         plugins={[timeGridPlugin]} 
@@ -178,7 +252,7 @@ class User extends Component {
                         customButtons={{
                             myCustomButton : {
                                 text: 'Grįžti',
-                                click : () => this.dayClickedHandler()
+                                click : () => this.dayClickedHandler(null)
                             }}
                         }
                         header={{   
@@ -194,23 +268,10 @@ class User extends Component {
                             {hour: 'numeric',
                             minute: '2-digit'}
                         }
-                        events= {[
-                            {
-                                start: date,
-                                end: "2019-09-30T09:15:00",
-                                rendering: 'background',
-                                backgroundColor:"green"
-                            },
-                            {
-                                start: "2019-09-30T12:00:00",
-                                end: "2019-09-30T12:15:00",
-                                rendering: 'background',
-                                backgroundColor:"green"
-                            }]
-                        }
-                        eventClick ={
-                                (info) => {date = info.event.start; console.log(date)}
-                            }
+                        events= {this.state.dayEvents}
+                        // eventClick ={
+                        //         (info) => {date = info.event.start}
+                        //     }
                             />
                     </div>
         }

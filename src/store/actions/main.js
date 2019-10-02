@@ -140,7 +140,8 @@ export const patientServedSuccess = (newData, visitTime, dataKey, withPatient) =
 
 export const patientServedFail = (error) => {
     return {
-        type:actionTypes.PATIENT_SERVED_FAIL
+        type:actionTypes.PATIENT_SERVED_FAIL,
+        error
     }
 }
 
