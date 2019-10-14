@@ -1,0 +1,17 @@
+{   
+    "description": "",
+    "autoload": {
+        "psr-4": {
+            "Nfq\\": "app/functions/"
+        }
+    },
+    "name": "vendor/name",
+    "authors": [
+        {
+            "name": "raluzez"
+        }
+    ],
+    "require": {
+        "codedungeon/php-cli-colors": "~1.0"
+    }
+}
