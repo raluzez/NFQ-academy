@@ -13,5 +13,8 @@
     ],
     "require": {
         "codedungeon/php-cli-colors": "~1.0"
+    },
+    "config": {
+        "optimize-autoloader": true
     }
 }
