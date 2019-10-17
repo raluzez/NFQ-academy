@@ -1,0 +1,82 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Raleway', sans-serif;
+}
+.ContentBox {
+    margin:auto;
+    max-width: 850px;
+    min-width: 250px;
+}
+
+.MessageBox {
+    border-width:1px;
+    border-right-width: 44px;
+    border-style:solid;
+    border-radius: 4px;
+    box-shadow:0 1px 4px rgba(40,40,40,.3);
+    width:100%;
+    margin: 0px auto 18px auto;
+    padding:0 18px;
+}
+
+.MessageBox--success {
+    border-color: #14872C;
+}
+
+.MessageBox--fail {
+    border-color: #F24010;
+}
+
+.Button{
+    font-size:16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    box-shadow:0 1px 4px rgba(40,40,40,.3);
+    border-radius: 4px;
+    padding:0 10px;
+    height: 40px;
+}
+
+.Button--neutral {
+    color:white;
+    background-color: #1E70A1;
+}
+
+.Button:hover {
+    background-color: rgba(30,112,161,.75);
+}
+
+.Button:active {
+    border:none;
+    margin-top:-2px;
+}
+
+
+/* this can lead to unexpected behaviour. Any margin property that has a higher specifisity value or used later at the file could owerwrite it (In this case I use the same specificity with madia@). Better solution to use float:right */
+.u-floatRight {
+    display: block;
+    margin: auto 0 auto auto;
+}
+
+.u-bottomMargin {
+    margin-bottom: 50px;
+}
+
+/* not the best name, but this class is for homework only */
+.u-notAtTheTopOfThePage{
+    margin-top: 100px;
+}
+
+@media(max-width:850px){
+    .u-notAtTheTopOfThePage{
+        margin-top:50px;
+    }
+
+    /* this can lead to unexpected behaviour when there is more than one button on the page. A better solution would be to remove u-floatRight class with JavaScipt (when u-floatRight class using float:right)*/
+    .Button {
+        display: block;
+        margin: auto;
+    }
+}

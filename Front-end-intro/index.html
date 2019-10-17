@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Work</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- Component with 3 other independent components inside -->
+    <div class='ContentBox u-notAtTheTopOfThePage'>
+        <!-- Component with modifier, utility class and 3 other elements inside -->
+        <div class='MessageBox MessageBox--success u-bottomMargin'>
+            <p><b>Incorrect email address.</b></p>
+            <p>The email you entered does not belong to any InterNations account. Please try again</p>
+            <p>If you forgot the email address with which you registered, please <a href="">request support</a></p>
+        </div>
+        <!-- Component with modifier, utility class and 3 other elements inside -->
+        <div class='MessageBox MessageBox--fail u-bottomMargin'>
+            <p><b>Thank you!</b></p>
+            <p>You have successfully sent the invitation at <a href="">my@email.com</a>.</p>
+            <p>All you have to do now is accept the invitation and start connecting whith members of our community..</p>
+        </div>
+        <!-- Component with modifier and utility class-->
+        <button class='Button Button--neutral u-floatRight' onclick="window.location.reload()">continue to next page</button>
+    </div>
+</body>
+</html>
